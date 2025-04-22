@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shoot-Em-Up Tournament</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Shoot-Em-Up Tournament</h1>
+
+  <div id="battlefield">
+    <div id="bot1Stats" class="bot-stats"></div>
+
+    <div id="controls">
+      <label for="roundCountInput">Number of Rounds:</label>
+      <input id="roundCountInput" type="number" min="1" value="5" />
+      <button id="startGameBtn">Start Game</button>
+      <br /><br />
+      <button id="nextRoundBtn" disabled>▶️ Next Round</button>
+      <button id="exportBtn" style="display:none;">📦 Export Match History</button>
+
+      <div class="manual-control">
+        <h3>Manual Bot Control</h3>
+        <div class="bot-manual">
+          <p><strong>Bot 1:</strong></p>
+          <button onclick="manualBotAction('bot1', 'Shoot')">🔫 Shoot</button>
+          <button onclick="manualBotAction('bot1', 'Reload')">🔁 Reload</button>
+          <button onclick="manualBotAction('bot1', 'Block')">🛡 Block</button>
+          <button onclick="manualBotAction('bot1', 'Auto')">🤖 Auto</button>
+        </div>
+        <div class="bot-manual">
+          <p><strong>Bot 2:</strong></p>
+          <button onclick="manualBotAction('bot2', 'Shoot')">🔫 Shoot</button>
+          <button onclick="manualBotAction('bot2', 'Reload')">🔁 Reload</button>
+          <button onclick="manualBotAction('bot2', 'Block')">🛡 Block</button>
+          <button onclick="manualBotAction('bot2', 'Auto')">🤖 Auto</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="bot2Stats" class="bot-stats"></div>
+  </div>
+
+  <div id="actionFx"></div>
+  <div id="log"></div>
+
+  <script type="module" src="main.js"></script>
+</body>
+</html>
