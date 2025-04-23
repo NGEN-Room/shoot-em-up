@@ -102,6 +102,14 @@ One of the following strings:
 
 ---
 
+
+## 🎯 How to add your bot to the selections
+1. in index.html
+2. under line 22 and 41 you can add your bot as an option
+3. use the other options to connect a bot to a selection
+
+---
+
 ## 🖼 Optional: Add a Portrait
 
 You can submit a custom avatar for your bot!
