@@ -101,3 +101,14 @@ One of the following strings:
 > If you try to shoot without ammo, nothing happens (no damage, no penalty — but you still look silly 😅).
 
 ---
+
+## 🖼 Optional: Add a Portrait
+
+You can submit a custom avatar for your bot!
+
+- Place it inside: `bots/bPortraits/`
+- Name the file exactly like your function, e.g. `Blockey.png`
+- Recommended format: PNG or JPG
+- Recommended size: 100x100px
+
+Your portrait will automatically show beside your bot during the match!

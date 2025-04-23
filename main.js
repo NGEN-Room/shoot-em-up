@@ -47,9 +47,11 @@ function generateManualButtons(botName, player) {
 function updateBotStats() {
   const bot1Stats = document.getElementById("bot1Stats");
   const bot2Stats = document.getElementById("bot2Stats");
+  const bot1Img = `./bots/bPortraits/${bot1.name}.png`;
+  const bot2Img = `./bots/bPortraits/${bot2.name}.png`;
 
   bot1Stats.innerHTML = `
-    <img id="bot1Avatar" class="avatar" src="assets/bot1.png" />
+    <img class="avatar" src="${bot1Img}" onerror="this.src='assets/default.png'" />
     <h2>${bot1.name}</h2>
     ${generateHealthBar(bot1.health)}
     <p>💥 Ammo: ${bot1.ammo}</p>
@@ -57,7 +59,7 @@ function updateBotStats() {
   `;
 
   bot2Stats.innerHTML = `
-    <img id="bot2Avatar" class="avatar" src="assets/bot2.png" />
+    <img class="avatar" src="${bot2Img}" onerror="this.src='bots/bPortraits/default.png'" />
     <h2>${bot2.name}</h2>
     ${generateHealthBar(bot2.health)}
     <p>💥 Ammo: ${bot2.ammo}</p>
