@@ -1,8 +1,5 @@
 // main.js
 
-import Bot1 from './bots/bot1.js';
-import Bot2 from './bots/bot2.js';
-
 let maxRounds = 0;
 let round = 1;
 let history = [];
@@ -28,6 +25,25 @@ function generateHealthBar(health) {
   return `<div class="health-bar" style="width: ${percent}%"></div>`;
 }
 
+function generateManualButtons(botName, player) {
+  const target = document.getElementById(player === "Player1" ? "bot1Stats" : "bot2Stats");
+  const idPrefix = `${botName}_${player}`;
+
+  target.innerHTML += `
+    <div class="bot-manual">
+      <button id="${idPrefix}_Shoot">🔫 Shoot</button>
+      <button id="${idPrefix}_Reload">🔁 Reload</button>
+      <button id="${idPrefix}_Block">🛡 Block</button>
+      <button id="${idPrefix}_Auto">🤖 Auto</button>
+    </div>
+  `;
+
+  document.getElementById(`${idPrefix}_Shoot`).onclick = () => manualBotAction(player.toLowerCase(), "Shoot");
+  document.getElementById(`${idPrefix}_Reload`).onclick = () => manualBotAction(player.toLowerCase(), "Reload");
+  document.getElementById(`${idPrefix}_Block`).onclick = () => manualBotAction(player.toLowerCase(), "Block");
+  document.getElementById(`${idPrefix}_Auto`).onclick = () => manualBotAction(player.toLowerCase(), null);
+}
+
 function updateBotStats() {
   const bot1Stats = document.getElementById("bot1Stats");
   const bot2Stats = document.getElementById("bot2Stats");
@@ -47,21 +63,21 @@ function updateBotStats() {
     <p>💥 Ammo: ${bot2.ammo}</p>
     <p>🧠 Last Choice: ${bot2.lastChoice || '-'}</p>
   `;
+
+  generateManualButtons(bot1.name, "Player1");
+  generateManualButtons(bot2.name, "Player2");
 }
 
 function logMessage(msg) {
   const log = document.getElementById("log");
-  log.innerHTML += `<p>${msg}</p>`;
+  const line = document.createElement("p");
+  line.textContent = msg;
+  log.appendChild(line);
+  log.scrollTop = log.scrollHeight;
 }
 
 function logRound(round, bot1, bot2) {
-  const log = document.getElementById("log");
-  log.innerHTML += `
-    <h3>Round ${round}</h3>
-    <p>${bot1.name}: ${bot1.lastChoice} | HP: ${bot1.health} | Ammo: ${bot1.ammo}</p>
-    <p>${bot2.name}: ${bot2.lastChoice} | HP: ${bot2.health} | Ammo: ${bot2.ammo}</p>
-    <hr />
-  `;
+  logMessage(`ROUND ${round}: ${bot1.name} ➡️ ${bot1.lastChoice} | ${bot2.name} ➡️ ${bot2.lastChoice}`);
 }
 
 function resolveActions(botA, actionA, botB, actionB) {
@@ -93,15 +109,27 @@ function playSound(action) {
 }
 
 function declareWinner() {
-  const log = document.getElementById("log");
-  const winner =
-    bot1.health > bot2.health ? bot1.name :
-    bot2.health > bot1.health ? bot2.name :
-    "Draw";
-
-  log.innerHTML += `<h2>🏆 Winner: ${winner} 🏆</h2>`;
   document.getElementById("nextRoundBtn").disabled = true;
   document.getElementById("exportBtn").style.display = "inline";
+
+  const winner = bot1.health > bot2.health ? bot1
+              : bot2.health > bot1.health ? bot2
+              : null;
+
+  const modal = document.createElement("div");
+  modal.id = "winnerModal";
+  modal.innerHTML = `
+    <div class="modal-content">
+      <h2>${winner ? `🏆 ${winner.name} Wins!` : "🤝 It's a draw!"}</h2>
+      <ul>
+        <li><strong>${bot1.name}</strong> - HP: ${bot1.health}, Ammo: ${bot1.ammo}</li>
+        <li><strong>${bot2.name}</strong> - HP: ${bot2.health}, Ammo: ${bot2.ammo}</li>
+      </ul>
+      <button onclick="document.getElementById('winnerModal').remove()">Close</button>
+    </div>
+  `;
+  document.body.appendChild(modal);
+  modal.style.display = "flex";
 }
 
 function playRound() {
@@ -137,21 +165,16 @@ function playRound() {
 }
 
 window.manualBotAction = function(botId, action) {
-  manualOverrides[botId] = action === 'Auto' ? null : action;
-  logMessage(`${botId.toUpperCase()} set to: ${action}`);
+  manualOverrides[botId] = action;
+  logMessage(`${botId.toUpperCase()} set to: ${action || 'Auto'}`);
 };
 
 // Event listeners
 
-document.getElementById("startGameBtn").addEventListener("click", () => {
+document.getElementById("startGameBtn").addEventListener("click", async () => {
   maxRounds = parseInt(document.getElementById("roundCountInput").value, 10);
-
-  bot1 = createBot("Bot 1", Bot1);
-  bot2 = createBot("Bot 2", Bot2);
-
   round = 1;
   history = [];
-
   document.getElementById("log").innerHTML = "";
   document.getElementById("nextRoundBtn").disabled = false;
   document.getElementById("exportBtn").style.display = "none";
@@ -159,6 +182,18 @@ document.getElementById("startGameBtn").addEventListener("click", () => {
 
   manualOverrides.bot1 = null;
   manualOverrides.bot2 = null;
+
+  const bot1Path = document.getElementById("bot1Select").value;
+  const bot2Path = document.getElementById("bot2Select").value;
+
+  const bot1Module = await import(bot1Path);
+  const bot2Module = await import(bot2Path);
+
+  const Bot1 = bot1Module.default;
+  const Bot2 = bot2Module.default;
+
+  bot1 = createBot(Bot1.name || "Bot 1", Bot1);
+  bot2 = createBot(Bot2.name || "Bot 2", Bot2);
 
   updateBotStats();
   logMessage(`🟢 Game started: ${maxRounds} rounds`);
