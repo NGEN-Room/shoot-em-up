@@ -4,18 +4,37 @@ export default function bottomlessPrime (history, self, opponent) {
       return "Reload";
     }
   
-    // if opponenet has ammo ammo block 70% of time that next turn
+    // if opponenet has ammo, 80% chance to block, if not shoot
     if (opponent.ammo > 0) {
-      return Math.random() < 0.7 ? "Block" : "Shoot";
+      return Math.random() < 0.8 ? "Block" : "Shoot";
     }
   
-    // if opponent jsut reload, shoot
+    // if opponent jsut shoot then shoot after
     const lastRound = history[history.length - 1];
     if (lastRound) {
       const oppLastMove = lastRound.results.find(r => r.name === opponent.name);
-      if (oppLastMove && oppLastMove.choice === "Reload" && self.ammo > 0) {
+      if (
+        oppLastMove &&
+        oppLastMove.choice === "Shoot" && // they just shot last round
+        opponent.ammo === 0 &&  // they now have no ammo
+        self.ammo > 0         // and you have ammo
+      ) {
         return "Shoot";
       }
+    }
+
+
+    // if opponent jsut reloaded then block
+    if (lastRound){
+        const oppLastMove = lastRound.results.find(r => r.name === opponent.name);
+        if (
+            oppLastMove &&
+            oppLastMove.choice === "Reload" &&
+            self.ammo > 0
+        )
+        {
+            return "shoot"
+        }
     }
   
     // reload if nothing going on
