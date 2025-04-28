@@ -14,6 +14,14 @@ export default function bottomlessPrime(history, self, opponent) {
     if (opponent.ammo > 0) {
       return Math.random() < 0.8 ? "Block" : "Shoot";
     }
+
+    // if opp just reloaded then block
+    if (
+        oppLastMove &&
+        oppLastMove.choice === "Reload"
+        ) {
+        return "Block";
+        }
   
     // if opp shoot and has no ammo then shoot
     if (
@@ -25,14 +33,7 @@ export default function bottomlessPrime(history, self, opponent) {
       return "Shoot";
     }
   
-    // if opp just reloaded then block
-    if (
-      oppLastMove &&
-      oppLastMove.choice === "Reload" &&
-      self.ammo > 0
-    ) {
-      return "Block";
-    }
+
   
     // Otherwise small cahnce to reload
     if (Math.random() < 0.3) {
