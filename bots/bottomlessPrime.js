@@ -1,47 +1,44 @@
-export default function bottomlessPrime (history, self, opponent) {
-    // no ammo
+export default function bottomlessPrime(history, self, opponent) {
+    // No ammo
     if (self.ammo === 0) {
       return "Reload";
     }
   
-    // if opponenet has ammo, 80% chance to block, if not shoot
+    // opp last round
+    const lastRound = history[history.length - 1];
+
+    // op last move
+    const oppLastMove = lastRound ? lastRound.results.find(r => r.name === opponent.name) : null;
+  
+    // If op has ammo block in 80%
     if (opponent.ammo > 0) {
       return Math.random() < 0.8 ? "Block" : "Shoot";
     }
   
-    // if opponent jsut shoot then shoot after
-    const lastRound = history[history.length - 1];
-    if (lastRound) {
-      const oppLastMove = lastRound.results.find(r => r.name === opponent.name);
-      if (
-        oppLastMove &&
-        oppLastMove.choice === "Shoot" && // they just shot last round
-        opponent.ammo === 0 &&  // they now have no ammo
-        self.ammo > 0         // and you have ammo
-      ) {
-        return "Shoot";
-      }
-    }
-
-
-    // if opponent jsut reloaded then block
-    if (lastRound){
-        const oppLastMove = lastRound.results.find(r => r.name === opponent.name);
-        if (
-            oppLastMove &&
-            oppLastMove.choice === "Reload" &&
-            self.ammo > 0
-        )
-        {
-            return "shoot"
-        }
+    // if opp shoot and has no ammo then shoot
+    if (
+      oppLastMove &&
+      oppLastMove.choice === "Shoot" &&
+      opponent.ammo === 0 &&
+      self.ammo > 0
+    ) {
+      return "Shoot";
     }
   
-    // reload if nothing going on
+    // if opp just reloaded then block
+    if (
+      oppLastMove &&
+      oppLastMove.choice === "Reload" &&
+      self.ammo > 0
+    ) {
+      return "Block";
+    }
+  
+    // Otherwise small cahnce to reload
     if (Math.random() < 0.3) {
       return "Reload";
     }
   
-    // shoot
+    // else shoot
     return "Shoot";
   }
