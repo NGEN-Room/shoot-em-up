@@ -1,3 +1,7 @@
-export default function blockey(){
+export default function blockey(history, self, opponent){
+
     return "Block"
 }
+
+
+

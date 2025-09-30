@@ -74,7 +74,7 @@ function kilabyteFn (customBot){
 
 }
 
-
+let botfunc = {
     health : function() {
         if (this.maxHealth > 0) {
             this.maxHealth--;
@@ -130,4 +130,4 @@ function kilabyteFn (customBot){
     
     console.log(Kilabyte.shoot() + " " + Kilabyte.lastAction);
     console.log(Kilabyte.block() + " " + Kilabyte.lastAction);
-    
+}
