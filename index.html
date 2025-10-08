@@ -11,48 +11,80 @@
 </head>
 
 <body>
+  <div class="background-glow"></div>
   <header class="header">
+    <span class="header__badge">Arcade League</span>
     <h1>Shoot-Em-Up Tournament</h1>
-    <p>🎯 Code your champion. Win the war.</p>
+    <p class="header__tagline">🎯 Code your champion. Win the war.</p>
   </header>
 
-  <div id="battlefield">
-    <div id="bot1Stats" class="bot-stats">
-      <label for="bot1Select">Select Bot 1:</label>
-      <select id="bot1Select">
-        <option value="./bots/bot1.js">bot1.js</option>
-        <option value="./bots/bot2.js">bot2.js</option>
-        <option value="./bots/blockey.js">blockey</option>
-        <option value="./bots/bottomlessPrime.js">Bot-tomless Prime</option>
-        <option value="./bots/gamblingman.js"> Gamblingman</option>
-        <option value="./bots/kilabyte.js"> Kilabyte</option>
-        <option value="./bots/leeharveyoswald.js"> leeharveyoswald</option>
-      </select>
-    </div>
+  <main class="arena">
+    <section class="loadout-panel card">
+      <h2>Choose Your Bots</h2>
+      <div class="loadout-grid">
+        <div class="loadout-slot">
+          <label for="bot1Select">Contender One</label>
+          <select id="bot1Select">
+            <option value="./bots/bot1.js">bot1.js</option>
+            <option value="./bots/bot2.js">bot2.js</option>
+            <option value="./bots/blockey.js">blockey</option>
+            <option value="./bots/bottomlessPrime.js">Bot-tomless Prime</option>
+            <option value="./bots/gamblingman.js">Gamblingman</option>
+            <option value="./bots/kilabyte.js">Kilabyte</option>
+            <option value="./bots/leeharveyoswald.js">leeharveyoswald</option>
+          </select>
+        </div>
+        <div class="loadout-slot">
+          <label for="bot2Select">Contender Two</label>
+          <select id="bot2Select">
+            <option value="./bots/bot1.js">bot1.js</option>
+            <option value="./bots/bot2.js">bot2.js</option>
+            <option value="./bots/blockey.js">blockey</option>
+            <option value="./bots/bottomlessPrime.js">Bot-tomless Prime</option>
+            <option value="./bots/gamblingman.js">Gamblingman</option>
+            <option value="./bots/kilabyte.js">Kilabyte</option>
+            <option value="./bots/leeharveyoswald.js">leeharveyoswald</option>
+          </select>
+        </div>
+      </div>
+    </section>
 
-    <div id="controls">
-      <label for="roundCountInput">Number of Rounds:</label>
-      <input id="roundCountInput" type="number" min="1" value="5" />
-      <button id="startGameBtn">Start Game</button>
-      <button id="nextRoundBtn" disabled>▶️ Next Round</button>
-      <button id="exportBtn" style="display:none;">📦 Export Match History</button>
-      <div id="actionFx"></div>
-      <div id="log" class="log-box"></div>
-    </div>
+    <section id="battlefield" class="battlefield">
+      <article id="bot1Stats" class="bot-stats card">
+        <div class="bot-placeholder">
+          <p class="bot-placeholder__label">Awaiting challenger one...</p>
+          <p>Select a bot and start the match to reveal live stats.</p>
+        </div>
+      </article>
 
-    <div id="bot2Stats" class="bot-stats">
-      <label for="bot2Select">Select Bot 2:</label>
-      <select id="bot2Select">
-        <option value="./bots/bot1.js">bot1.js</option>
-        <option value="./bots/bot2.js">bot2.js</option>
-        <option value="./bots/blockey.js">blockey</option>
-        <option value="./bots/bottomlessPrime.js">Bot-tomless Prime</option>
-        <option value="./bots/gamblingman.js"> Gamblingman</option>
-        <option value="./bots/kilabyte.js"> Kilabyte</option>
-        <option value="./bots/leeharveyoswald.js"> leeharveyoswald</option>
-      </select>
-    </div>
-  </div>
+      <section id="controls" class="control-panel card">
+        <div class="control-panel__header">
+          <label for="roundCountInput">Number of Rounds</label>
+          <div class="round-selector">
+            <input id="roundCountInput" type="number" min="1" value="5" />
+            <span class="round-selector__hint">Best of</span>
+          </div>
+        </div>
+        <div class="control-panel__buttons">
+          <button id="startGameBtn">🚀 Start Game</button>
+          <button id="nextRoundBtn" disabled>▶️ Next Round</button>
+          <button id="exportBtn" class="ghost" style="display:none;">📦 Export Match History</button>
+        </div>
+        <div class="control-panel__fx" id="actionFx"></div>
+        <div class="log-wrapper">
+          <span class="log-wrapper__title">Match Log</span>
+          <div id="log" class="log-box"></div>
+        </div>
+      </section>
+
+      <article id="bot2Stats" class="bot-stats card">
+        <div class="bot-placeholder">
+          <p class="bot-placeholder__label">Awaiting challenger two...</p>
+          <p>Select a bot and start the match to reveal live stats.</p>
+        </div>
+      </article>
+    </section>
+  </main>
 
   <script type="module" src="main.js"></script>
 </body>

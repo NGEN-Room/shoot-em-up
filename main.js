@@ -22,7 +22,7 @@ function createBot(name, logicFn) {
 
 function generateHealthBar(health) {
   const percent = (health / 3) * 100;
-  return `<div class="health-bar" style="width: ${percent}%"></div>`;
+  return `<div class="health-bar" style="--fill: ${percent}%;"></div>`;
 }
 
 function generateManualButtons(botName, player) {
