@@ -1,4 +1,4 @@
-export default function Clank(history, self, opponent) {
+export default function clank(history, self, opponent) {
     if (self.ammo === 0) return "Reload";
     
     if (opponent.ammo >= 1) {
